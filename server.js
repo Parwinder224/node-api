@@ -12,7 +12,7 @@ var corsOptions = {
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
 const MONGO_URL =process.env.MONGO_URL;
-app.use(corsOptions)
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({extended:false}))
 
