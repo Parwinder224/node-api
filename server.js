@@ -8,7 +8,7 @@ const app = express();
 var cors = require('cors')
 // const PORT =process.env.PORT || 3000;
 var corsOptions = {
-    origin: 'http://example.com',
+    origin: 'http://localhost:4200',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
 const MONGO_URL =process.env.MONGO_URL;
