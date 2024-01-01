@@ -1,24 +1,47 @@
 require('dotenv').config()
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('./DB/productDb');
+// const mongooseUser =require('./DB/userDb')
 const http = require('http');
 const productRoute =require('./routes/productRoute');
 const errorMiddleware = require('./middleware/errorMiddleware');
 const app = express();
-var cors = require('cors')
+var cors = require('cors');
+User = require('./models/userModal')
+
+const userRoute = require('./routes/userRoute');
+bodyParser = require('body-parser'),
+jsonwebtoken = require("jsonwebtoken");
 // const PORT =process.env.PORT || 3000;
 var corsOptions = {
-    origin: 'http://example.com',
+    origin: 'http://localhost:4200',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
-const MONGO_URL =process.env.MONGO_URL;
-app.use(corsOptions)
+
+  console.log("cors option",)
+// const MONGO_URL =process.env.MONGO_URL;
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({extended:false}))
 
 app.use('/api/products',productRoute)
+app.use(function(req, res, next) {
+    if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
+      jsonwebtoken.verify(req.headers.authorization.split(' ')[1], 'RESTFULAPIs', function(err, decode) {
+        if (err) req.user = undefined;
+        req.user = decode;
+        next();
+      });
+    } else {
+      req.user = undefined;
+      next();
+    }
+  });
+app.use('/user',userRoute)
 
-mongoose.set('strictQuery', false);
+
+
+// mongoose.set('strictQuery', false);
 
 // app.listen(3000, () => {
 //     console.log('server is running on 3000 port')
@@ -47,11 +70,11 @@ const port = 3000;
 server.listen(port);
 
 // console.log(process)
-mongoose
-    .connect(MONGO_URL)
-    .then(() => {
-        console.log("connected to mongodb")
+// mongoose
+//     .connect(MONGO_URL)
+//     .then(() => {
+//         console.log("connected to mongodb")
        
-    }).catch((error) => {
-        console.log(error)
-    })
+//     }).catch((error) => {
+//         console.log(error)
+//     })
