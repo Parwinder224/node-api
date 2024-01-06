@@ -17,7 +17,10 @@ const getProductByID = asyncHandler(async (req, res) => {
         const { id } = req.params;
         const product = await Product.findById(id)
         res.status(200).json(product);
-        res.set('Access-Control-Allow-Origin', 'http://localhost:4200');
+         res.set({
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT,OPTIONS'
+    });
     } catch (error) {
         // res.status(500).json({ message: error.message })
         res.status(500);
