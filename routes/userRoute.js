@@ -7,7 +7,7 @@ const userHandlers = require('../controllers/userController');
 
 route.post('/auth/register', userHandlers.register)
 route.post('/auth/sign_in', userHandlers.sign_in)
-route.post('/profile', userHandlers.loginRequired, userHandlers.profile);
+route.post('/auth/profile', userHandlers.loginRequired, userHandlers.profile);
 module.exports = route
 // console.log('user route')
 // module.exports = function(app) {
